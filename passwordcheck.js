@@ -1,4 +1,3 @@
-<script type="text/javascript">
 
   function checkForm(form)
   {
@@ -10,4 +9,3 @@
 	return false;
   }
 }
-</script>
