@@ -24,16 +24,23 @@
 <b>Fire Ant Colony--></b>
  Amount to Be Added: <input type="text" name="score6">
  <br>
- <b>Password:</b> <input type="password" name="password">
+ <b>Password:</b> <input type="password" id="password" name="password">
  <br>
- <input type="submit">
+ <input type="submit" id="submit">
  </form>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
  <script>
- checkForm(password);
- if(true)
+ window.onLoad = function() {
+$("#password").change(function() {
+valid = checkForm(document.getElementById("password"));
+console.log("change event fired");
+ if(valid)
  {
-	
- }
+ document.getElementById("submit").removeAttribute("disabled");
+ } else {
+document.getElementById("submit").setAttribute("disabled", "");}});
+}
+
  </script>
  
 
