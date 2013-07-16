@@ -32,11 +32,11 @@ document.onload = function {
     </head>
 	<body>
 	<img src="scoreboard.jpg" width="100" height="100">
-	<h4> Great White Shark<a href="http://en.wikipedia.org/wiki/Great_white_shark"<i class="icon-globe"></i></a>: </h4><?php echo $_COOKIE["score1"]; ?>
-	<h4> Polar Bear<a href="http://en.wikipedia.org/wiki/Polar_bear"<i class="icon-globe"></i></a>:  </h4><?php echo $_COOKIE["score2"]; ?>
-	<h4> Honey Badger<a href="http://en.wikipedia.org/wiki/Honey_badger"<i class="icon-globe"></i></a>:  </h4><?php echo $_COOKIE["score3"]; ?>
-	<h4> Wolverine<a href="http://en.wikipedia.org/wiki/Wolverine"></i></a>:  </h4><?php echo $_COOKIE["score4"]; ?>
-	<h4> Blue Whale<a href="http://en.wikipedia.org/wiki/Blue_whale"<i class="icon-globe"></i></a>:  </h4><?php echo $_COOKIE["score5"]; ?>
-	<h4> Fire Ant Colony<a href="http://en.wikipedia.org/wiki/Fire_ant"<i class="icon-globe"></i></a>:  </h4><?php echo $_COOKIE["score6"]; ?>
+	<h4> Great White Shark<a href="http://en.wikipedia.org/wiki/Great_white_shark"<i class="icon-globe"></i></a>: </h4><?php echo $_POST["score1"]; ?>
+	<h4> Polar Bear<a href="http://en.wikipedia.org/wiki/Polar_bear"<i class="icon-globe"></i></a>:  </h4><?php echo $_POST["score2"]; ?>
+	<h4> Honey Badger<a href="http://en.wikipedia.org/wiki/Honey_badger"<i class="icon-globe"></i></a>:  </h4><?php echo $_POST["score3"]; ?>
+	<h4> Wolverine<a href="http://en.wikipedia.org/wiki/Wolverine"></i></a>:  </h4><?php echo $_POST["score4"]; ?>
+	<h4> Blue Whale<a href="http://en.wikipedia.org/wiki/Blue_whale"<i class="icon-globe"></i></a>:  </h4><?php echo $_POST["score5"]; ?>
+	<h4> Fire Ant Colony<a href="http://en.wikipedia.org/wiki/Fire_ant"<i class="icon-globe"></i></a>:  </h4><?php echo $_POST["score6"]; ?>
 </body>
 </html>
