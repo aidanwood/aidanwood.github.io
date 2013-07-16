@@ -5,7 +5,7 @@
 </head>
  <body>
 
- <form action="scoreboard.php" method="post">
+ <form action="http://stars.strugee.net/" method="post">
  <b>Great White Shark--></b>
 Number of Stars: <input type="text" name="score1">
  <br>
@@ -43,6 +43,6 @@ document.getElementById("submit").setAttribute("disabled", "");}});
 
  </script>
  
-
+ <!--604800-->
  </body>
  </html> 
