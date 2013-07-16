@@ -5,7 +5,7 @@
 </head>
  <body>
 
- <form action="http://stars.strugee.net/" method="post">
+ <form action="index.php" method="post">
  <b>Great White Shark--></b>
 Number of Stars: <input type="text" name="score1">
  <br>
