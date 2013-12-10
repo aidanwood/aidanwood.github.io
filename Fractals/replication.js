@@ -164,3 +164,62 @@ function maketriangle(pointA, pointB, pointC)
 	ctx.stroke();
 
 }
+
+function septgenerate(PointA, PointB, PointC, PointD, PointE, PointF, PointG, startP)
+{
+	var i = 1;
+	while(i < 100000)
+	{
+		var r = random(1,7);
+		if(r == 1)
+		{
+			 nextP = midpoint(PointA, startP);
+			 ctx.fillRect(nextP[0],nextP[1],1,1);
+			 startP = nextP;
+			 i+=1;
+			 
+		}
+		else if(r == 2)
+		{
+			nextP = midpoint(PointB, startP);
+			ctx.fillRect(nextP[0], nextP[1], 1, 1);
+			startP = nextP;
+			i+=1;
+		}
+		else if(r == 3)
+		{
+			nextP = midpoint(PointC, startP);
+			ctx.fillRect(nextP[0], nextP[1], 1, 1);
+			startP = nextP;
+			i+=1;
+		}
+		else if(r == 4)
+		{
+			nextP = midpoint(PointD, startP);
+			ctx.fillRect(nextP[0], nextP[1], 1, 1);
+			startP = nextP;
+			i+=1;
+		}
+		else if(r == 5)
+		{
+			nextP = midpoint(PointE, startP);
+			ctx.fillRect(nextP[0], nextP[1], 1, 1);
+			startP = nextP;
+			i+=1;
+		}
+		else if(r == 6)
+		{
+			nextP = midpoint(PointF, startP);
+			ctx.fillRect(nextP[0], nextP[1], 1, 1);
+			startP = nextP;
+			i+=1;
+		}
+		else if(r == 7)
+		{
+			nextP = midpoint(PointG, startP);
+			ctx.fillRect(nextP[0], nextP[1], 1, 1);
+			startP = nextP;
+			i+=1;
+		}
+	}
+}
