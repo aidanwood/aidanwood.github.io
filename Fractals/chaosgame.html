@@ -1,0 +1,46 @@
+<html>
+<head>
+<script type="text/javascript" src="replication.js"></script>
+</head>
+<title> Fractal Project </title>
+<canvas id="canvas1" width="800" height="600"
+style="border:1px solid #000000;">
+</canvas>
+<script>
+var canvas = document.getElementById("canvas1");
+var ctx = canvas.getContext("2d");
+var nextP = new Array();
+var start = new Array();
+start[0] = 400;
+start[1] = 500;
+//ctx.fillRect(start[0],start[1],4,4); 
+ctx.stroke();
+
+var pointAO = new Array();
+var pointBO = new Array();
+var pointCO = new Array();
+pointAO[0] = 100;
+pointAO[1] = 580;
+pointBO[0] = 700;
+pointBO[1] = 580;
+pointCO[0] = 400;
+pointCO[1] = 50;
+
+ctx.moveTo(pointAO[0],pointAO[1]);
+ctx.lineTo(pointBO[0],pointBO[1]);
+ctx.stroke();
+ctx.moveTo(pointAO[0],pointAO[1]);
+ctx.lineTo(pointCO[0],pointCO[1]);
+ctx.stroke();
+ctx.moveTo(pointCO[0],pointCO[1]);
+ctx.lineTo(pointBO[0],pointBO[1]);
+ctx.stroke();
+
+
+generatetri(pointAO, pointBO, pointCO, start); 
+
+
+</script>
+
+
+</html>

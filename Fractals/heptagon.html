@@ -1,0 +1,59 @@
+<html>
+<head>
+<script type="text/javascript" src="replication.js"></script>
+</head>
+<title> Fractal Project </title>
+<body>
+<canvas id="canvas1" width="800" height="600"
+style="border:1px solid #000000;">
+</canvas>
+</body>
+<script>
+var canvas = document.getElementById("canvas1");
+var ctx = canvas.getContext("2d");
+
+var nextP = new Array();
+var start = new Array();
+start[0] = 200;
+start[1] = 200;
+var pointAO = new Array();
+var pointBO = new Array();
+var pointCO = new Array();
+var pointDO = new Array();
+var pointEO = new Array();
+var pointFO = new Array();
+var pointGO = new Array();
+
+pointAO[0] = 50;
+pointAO[1] = 50;
+pointBO[0] = 450;
+pointBO[1] = 50;
+pointCO[0] = 450;
+pointCO[1] = 450;
+pointDO[0] = 50;
+pointDO[1] = 450; 
+
+//ctx.fillRect(start[0],start[1],4,4); 
+ctx.rect(50, 50, 400, 400);
+ctx.stroke();
+//ctx.moveTo(pointAO[0],pointAO[1]);
+//ctx.lineTo(pointBO[0],pointBO[1]);
+//ctx.stroke();
+//ctx.moveTo(pointBO[0],pointBO[1]);
+//ctx.lineTo(pointCO[0],pointCO[1]);
+//ctx.stroke();
+//ctx.moveTo(pointCO[0],pointCO[1]);
+//ctx.lineTo(pointDO[0],pointDO[1]);
+//ctx.stroke();
+//ctx.moveTo(pointDO[0],pointDO[1]);
+//ctx.lineTo(pointAO[0],pointAO[1]);
+//ctx.stroke();
+
+
+generatesq(pointAO, pointBO, pointCO, pointDO, start); 
+
+
+</script>
+
+
+</html>

@@ -1,0 +1,37 @@
+<html>
+<head>
+<script type="text/javascript" src="randomfern.js"></script>
+
+</head>
+<title> Fractal Project </title>
+<canvas id="canvas1" width="800" height="600"
+style="border:1px solid #000000;">
+</canvas>
+<script>
+var canvas = document.getElementById("canvas1");
+var ctx = canvas.getContext("2d");
+var nextP1 = new Array();
+var nextP2 = new Array();
+var nextP3 = new Array();
+var nextP4 = new Array();
+var start1 = new Array();
+var start2 = new Array();
+var start3 = new Array();
+var start4 = new Array();
+
+start1[0] = 400;
+start1[1] = 500;
+start2[0] = 400;
+start2[1] = 500;
+start3[0] = 400;
+start3[1] = 500;
+start4[0] = 400;
+start4[1] = 500;
+
+ctx.fillRect(start[0],start[1],5,5); 
+ctx.stroke();
+randFern(start1, start2, start3, start4); 
+</script>
+
+
+</html>

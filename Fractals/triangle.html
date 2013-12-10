@@ -1,0 +1,116 @@
+<html>
+<head>
+<script type="text/javascript" src="replication.js"></script>
+<script type="text/javascript" src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.7.4.js"></script>
+</head>
+<title> Fractal Project </title>
+<body>
+<canvas id="canvas1" width="800" height="600"
+style="border:1px solid #000000;">
+</canvas>
+
+<button onclick="startP=moveTop(startP), moves += 1, write()">Top</button>
+<button onclick="startP=moveLeft(startP), moves += 1, write()">Left</button>
+<button onclick="startP=moveRight(startP), moves += 1, write()">Right</button>
+
+
+</body>
+<p id="moves"> 0 </p>
+<script>
+
+var pointAO = new Array();
+var pointBO = new Array();
+var pointCO = new Array();
+var startP = new Array();
+var moves = 0;
+
+
+pointAO[0] = 200;
+pointAO[1] = 500;
+pointBO[0] = 600;
+pointBO[1] = 500;
+pointCO[0] = 400;
+pointCO[1] = 300;
+startP = pointAO;
+
+var c = document.getElementById("canvas1");
+var ctx=c.getContext("2d");
+ctx.moveTo(pointAO[0],pointAO[1]);
+ctx.lineTo(pointBO[0],pointBO[1]);
+ctx.stroke();
+ctx.moveTo(pointAO[0],pointAO[1]);
+ctx.lineTo(pointCO[0],pointCO[1]);
+ctx.stroke();
+ctx.moveTo(pointCO[0],pointCO[1]);
+ctx.lineTo(pointBO[0],pointBO[1]);
+ctx.stroke();
+
+ctx.fillRect(pointAO[0]-5,pointAO[1]-5,10,10); 
+
+ctx.stroke();
+createA(pointAO, pointBO, pointCO);
+createB(pointAO, pointBO, pointCO);
+createC(pointAO, pointBO, pointCO);
+pointA = createA(pointAO, pointBO, pointCO);
+pointB = createB(pointAO, pointBO, pointCO);
+pointC = createC(pointAO, pointBO, pointCO);
+
+createA(pointAO, pointA, pointC);
+createB(pointAO, pointA, pointC);
+createC(pointAO, pointA, pointC);
+
+createA(pointCO, pointC, pointB);
+createB(pointCO, pointC, pointB);
+createC(pointCO, pointC, pointB);
+
+createA(pointBO, pointA, pointB);
+createB(pointBO, pointA, pointB);
+createC(pointBO, pointA, pointB);
+
+ctx.strokeStyle = '#f00';
+ctx.beginPath();
+maketriangle(pointB, midpoint(pointBO, pointB), midpoint(pointB, pointA));
+
+
+function moveTop(startP)
+{
+	nextP = midpoint(pointCO, startP);
+	ctx.fillRect(nextP[0]-5,nextP[1]-5,10,10);
+	startP = nextP;
+	return nextP;
+}
+function moveLeft(startP)
+{
+	nextP = midpoint(pointAO, startP);
+	ctx.fillRect(nextP[0]-5,nextP[1]-5,10,10);
+	startP = nextP;
+	return nextP;
+}
+function moveRight(startP)
+{
+	nextP = midpoint(pointBO, startP);
+	ctx.fillRect(nextP[0]-5,nextP[1]-5,10,10);
+	startP = nextP;
+	return nextP;
+}
+function speedup100(startP)
+{
+	var i = 1;
+	while(i<100)
+	{
+		moveTop(startP);
+		moveLeft(startP);
+		moveRight(startP);
+		i+=1;
+	}
+}
+
+function write()
+{
+	document.getElementById("moves").innerHTML=moves;
+}
+</script>
+
+
+
+</html>
