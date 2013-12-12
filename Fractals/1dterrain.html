@@ -1,0 +1,134 @@
+<html>
+<head>
+<script type="text/javascript" src="replication.js"></script>
+</head>
+<title> Fractal Project </title>
+<body>
+<canvas id="canvas1" width="800" height="600"
+style="border:1px solid #000000;">
+</canvas>
+</body>
+<script>
+var canvas = document.getElementById("canvas1");
+var ctx = canvas.getContext("2d");
+
+startA = new Array();
+startB = new Array();
+linesegs = new Array();
+points = new Array();
+
+startA = [100, 300];
+startB = [700, 300];
+
+generate(startA, startB, 5);
+
+
+function random(min, max)
+{
+	return Math.random() * (max - min) + min;
+}
+function midpoint(Point1, Point2)
+{
+var mid = new Array();
+mid[0] = ((Point1[0]+Point2[0])/2);
+mid[1] = ((Point1[1]+Point2[1])/2);
+return mid;
+}
+function distance(Point1, Point2)
+{
+d = math.sqrt(((Point1[0]-Point2[0])(Point1[0]-Point2[0]))+((Point1[1]-Point2[1])(Point1[1]-Point2[1])))
+return d;
+}
+
+
+function generate(startA, startB, iterations)
+{
+	var min = -150;
+	var max = 150;
+	var mid1 = new Array();
+	var mid2 = new Array();
+	var mid3 = new Array();
+	var mid4 = new Array();
+	var mid5 = new Array();
+	var mid6 = new Array();
+	var mid7 = new Array();
+	
+	var dis1;
+	var dis2;
+	var dis3;
+	var dis4;
+	var dis5;
+	var dis6;
+	var dis7;
+	
+	dis4 = random(min, max);
+	
+	mid4 = midpoint(startA, startB);
+	
+	min = -75;
+	max = 75;
+	
+	dis2 = random(min, max);
+	dis6 = random(min, max);
+	
+	mid2 = midpoint(startA, mid4);
+	mid6 = midpoint(startB, mid6);
+	
+	min = -75/2;
+	max = 75/2;
+	
+	dis1 = random(min, max);
+	dis3 = random(min, max);
+	dis5 = random(min, max);
+	dis7 = random(min, max);
+	
+	mid1 = midpoint(startA, mid2);
+	mid3 = midpoint(mid2, mid4);
+	mid5 = midpoint(mid4, mid6);
+	mid7 = midpoint(mid6, startB);
+	
+	mid1[1] += dis1;
+	mid2[1] += dis2;
+	mid3[1] += dis3;
+	mid4[1] += dis4;
+	mid5[1] += dis5;
+	mid6[1] += dis6;
+	mid7[1] += dis7;
+	
+	ctx.moveTo(startA[0],startA[1]);
+	ctx.lineTo(mid1[0],mid1[1]);
+	ctx.stroke();
+	ctx.moveTo(mid1[0],mid1[1]);
+	ctx.lineTo(mid2[0],mid2[1]);
+	ctx.stroke();
+	ctx.moveTo(mid2[0],mid2[1]);
+	ctx.lineTo(mid3[0],mid3[1]);
+	ctx.stroke();
+	ctx.moveTo(mid3[0],mid3[1]);
+	ctx.lineTo(mid4[0],mid4[1]);
+	ctx.stroke();
+	ctx.moveTo(mid4[0],mid4[1]);
+	ctx.lineTo(mid5[0],mid5[1]);
+	ctx.stroke();
+	ctx.moveTo(mid5[0],mid5[1]);
+	ctx.lineTo(mid6[0],mid6[1]);
+	ctx.stroke();
+	ctx.moveTo(mid6[0],mid6[1]);
+	ctx.lineTo(mid7[0],mid7[1]);
+	ctx.stroke();
+	ctx.moveTo(mid7[0],mid7[1]);
+	ctx.lineTo(startB[0],startB[1]);
+	ctx.stroke();
+	
+	
+	
+	
+	
+	
+}
+
+
+</script>
+
+
+</html>

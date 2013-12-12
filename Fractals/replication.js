@@ -168,7 +168,7 @@ function maketriangle(pointA, pointB, pointC)
 function septgenerate(PointA, PointB, PointC, PointD, PointE, PointF, PointG, startP)
 {
 	var i = 1;
-	while(i < 100000)
+	while(i < 1000000)
 	{
 		var r = random(1,7);
 		if(r == 1)
