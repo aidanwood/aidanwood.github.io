@@ -7,6 +7,13 @@
 <canvas id="canvas1" width="800" height="600"
 style="border:1px solid #000000;">
 </canvas>
+<button onclick="clear()">Clear</button>
+<button onclick="generate(startA, startB, 5)">1</button>
+<button onclick="ten()">10</button>
+<button onclick="onehundred()">100</button>
+
+
+
 </body>
 <script>
 var canvas = document.getElementById("canvas1");
@@ -20,7 +27,7 @@ points = new Array();
 startA = [100, 300];
 startB = [700, 300];
 
-generate(startA, startB, 5);
+//generate(startA, startB, 5);
 
 
 function random(min, max)
@@ -95,6 +102,8 @@ function generate(startA, startB, iterations)
 	mid6[1] += dis6;
 	mid7[1] += dis7;
 	
+	
+	
 	ctx.moveTo(startA[0],startA[1]);
 	ctx.lineTo(mid1[0],mid1[1]);
 	ctx.stroke();
@@ -125,8 +134,37 @@ function generate(startA, startB, iterations)
 	
 	
 	
+	
 }
 
+
+function clear() 
+{
+	canvas = document.getElementById("canvas1");
+	ctx = canvas.getContext("2d"); 
+	//canvas.width = canvas.width;
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+
+function onehundred()
+{
+	var i = 1;
+	while(i < 100)
+	{
+		generate(startA, startB, 5);
+		i += 1;
+	}
+}
+function ten()
+{
+	var i = 1;
+	while(i < 10)
+	{
+		generate(startA, startB, 5);
+		i += 1;
+	}
+}
 
 </script>
 
