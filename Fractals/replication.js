@@ -10,6 +10,40 @@ mid[0] = ((Point1[0]+Point2[0])/2);
 mid[1] = ((Point1[1]+Point2[1])/2);
 return mid;
 }
+function multiply(v, num)
+{
+    return [v[0]*num, v[1]*num];
+}
+
+function divide(v, num)
+{
+    return [v[0]/num, v[1]/num];
+}
+ 
+function add(a, b)
+{
+    return [a[0]+b[0], a[1]+b[1]];
+}
+
+function minus(a, b)
+{
+    return [a[0]-b[0], a[1]-b[1]];
+}
+
+function DrawLine(a, b, c)
+{
+    ctx.beginPath();
+    ctx.strokeStyle = c;
+    ctx.moveTo(a[0], a[1]);
+    ctx.lineTo(b[0], b[1]);
+    ctx.stroke();
+    ctx.closePath();
+}
+
+function length(a, b){
+    return Math.sqrt(Math.pow(a[0] - b[0],2) + 
+                     Math.pow(a[1] - b[1],2));
+};
 function replication(pointA, pointB, pointC, canvas)
 {
 	disab = distance(pointA, pointB);
@@ -23,7 +57,7 @@ function replication(pointA, pointB, pointC, canvas)
 function createA(pointA, pointB, pointC)
 {
 	var c = document.getElementById("canvas1");
-	var ctx=c.getContext("2d");
+	var ctx=c.getctx("2d");
 	mid1 = midpoint(pointA, pointB);
 	mid2 = midpoint(pointB, pointC);
 	mid3 = midpoint(pointC, pointA);
@@ -43,7 +77,7 @@ function createA(pointA, pointB, pointC)
 function createB(pointA, pointB, pointC)
 {
 	var c = document.getElementById("canvas1");
-	var ctx=c.getContext("2d");
+	var ctx=c.getctx("2d");
 	mid1 = midpoint(pointA, pointB);
 	mid2 = midpoint(pointB, pointC);
 	mid3 = midpoint(pointC, pointA);
@@ -63,7 +97,7 @@ function createB(pointA, pointB, pointC)
 function createC(pointA, pointB, pointC)
 {
 	var c = document.getElementById("canvas1");
-	var ctx=c.getContext("2d");
+	var ctx=c.getctx("2d");
 	mid1 = midpoint(pointA, pointB);
 	mid2 = midpoint(pointB, pointC);
 	mid3 = midpoint(pointC, pointA);
