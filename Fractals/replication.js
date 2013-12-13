@@ -56,8 +56,8 @@ function replication(pointA, pointB, pointC, canvas)
 }
 function createA(pointA, pointB, pointC)
 {
-	var c = document.getElementById("canvas1");
-	var ctx=c.getctx("2d");
+	//var c = document.getElementById("canvas1");
+	//var ctx=c.getctx("2d");
 	mid1 = midpoint(pointA, pointB);
 	mid2 = midpoint(pointB, pointC);
 	mid3 = midpoint(pointC, pointA);
@@ -76,8 +76,8 @@ function createA(pointA, pointB, pointC)
 }
 function createB(pointA, pointB, pointC)
 {
-	var c = document.getElementById("canvas1");
-	var ctx=c.getctx("2d");
+	//var c = document.getElementById("canvas1");
+	//var ctx=c.getctx("2d");
 	mid1 = midpoint(pointA, pointB);
 	mid2 = midpoint(pointB, pointC);
 	mid3 = midpoint(pointC, pointA);
@@ -96,8 +96,8 @@ function createB(pointA, pointB, pointC)
 }
 function createC(pointA, pointB, pointC)
 {
-	var c = document.getElementById("canvas1");
-	var ctx=c.getctx("2d");
+	//var c = document.getElementById("canvas1");
+	//var ctx=c.getctx("2d");
 	mid1 = midpoint(pointA, pointB);
 	mid2 = midpoint(pointB, pointC);
 	mid3 = midpoint(pointC, pointA);
