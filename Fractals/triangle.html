@@ -1,7 +1,6 @@
 <html>
 <head>
 <script type="text/javascript" src="replication.js"></script>
-<script type="text/javascript" src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.7.4.js"></script>
 </head>
 <title> Fractal Project </title>
 <body>
@@ -93,22 +92,7 @@ function moveRight(startP)
 	startP = nextP;
 	return nextP;
 }
-function speedup100(startP)
-{
-	var i = 1;
-	while(i<100)
-	{
-		moveTop(startP);
-		moveLeft(startP);
-		moveRight(startP);
-		i+=1;
-	}
-}
 
-function write()
-{
-	document.getElementById("moves").innerHTML=moves;
-}
 </script>
 
 
