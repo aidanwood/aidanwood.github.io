@@ -121,7 +121,7 @@ function random(min, max)
 function generatetri(PointA, PointB, PointC, startP)
 {
 	var i = 1;
-	while(i < 1000000)
+	while(i < 100000)
 	{
 		var r = random(1,3);
 		if(r == 1)

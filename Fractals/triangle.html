@@ -69,7 +69,20 @@ createC(pointBO, pointA, pointB);
 
 ctx.strokeStyle = '#f00';
 ctx.beginPath();
-maketriangle(pointB, midpoint(pointBO, pointB), midpoint(pointB, pointA));
+var r = random(1,3);
+if(r == 1)
+{
+	maketriangle(pointB, midpoint(pointBO, pointB), midpoint(pointB, pointA));
+}
+else if(r == 2)
+{
+	maketriangle(pointC, midpoint(pointC, pointCO), midpoint(pointC, pointB));
+}
+else if(r == 3)
+{
+	maketriangle(pointA, midpoint(pointC, pointA), midpoint(pointAO, pointA));
+}
+
 
 
 function moveTop(startP)
