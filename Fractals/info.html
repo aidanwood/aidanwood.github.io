@@ -19,6 +19,7 @@
 
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 </head>
+<body style="background-color:#EEEEE6;">
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 <div class="navbar-header">
     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -44,40 +45,17 @@
     </ul>
   </div><!-- /.navbar-collapse -->
 </nav>
-<body style="background-color:#EEEEE6;">
-<h2> The Midpoint Displacement Theorem </h2>
-<h4> (An extension to Chaos Theory and random generation)</h4>
-<p> One cool computer generated figure that I made uses the Midpoint Displacement Theorem somewhat. The Midpoint Displacement Theorem is used to create terrain for computer 
-generated graphics, both 2-dimensional and 3-dimensional, and everything in between. Here is a simple process to use it to some extent:
-<ol>
-<li> Start with a line segment AB </li>
-<li> Take the midpoint C of AB </li>
-<li> Take the midpoint of AC and CB </li>
-<li> Iterate this process for as long as you want </li>
-</ol>
-<br>
-Here is an example of this process iterated three times (try it yourself <a href="1dterrain.html">here</a>): <br>
-<img src="mid1.png" height="200" width="300"> <br>
-Here is another example: <br>
-<img src="mid2.png" height="200" width="300"><br>
-Here is another example: <br>
-<img src="mid3.png" height="200" width="300"><br>
-What if you did this 10 times?: <br>
-<img src="mid10.png" height="200" width="300"><br>
-100 times? <br>
-<img src="mid100.png" height="200" width="300"><br>
-<br> I wonder what the fractal dimension is for this crazy figure. Here is the formula for fractal dimension, taken from 
-<a href="http://math.bu.edu/DYSYS/chaos-game/node6.html">Boston University</a> <br>
-<img src="dimension.gif"> <br>
-In that case, for the initial iteration, the fractal dimension would be log(2)/log(2), which equals 1. The extremely complicated one directly above would be a lot harder to 
-calculate for, and I honestly have no idea how to do it, since I'm not even sure that it itself is a fractal.  
+<h2> More Information </h2>
+<ul>
+<li> This is a high school project, not intended to provide reference material </li>
+<li> If you want to look at some of the functions, check out <a href="replication.js">this </a>file. It contains a lot of the functions I wrote and used </li>
 
+
+</ul>
 </body>
 <footer>
-
-
-
 <button onclick="goBack()">Go Back</button>
+
 <script>
 function goBack()
   {
