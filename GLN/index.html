@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+<title> GLN Project </title>
+<header> 
+
+<script src="processing-1.4.1.min.js"></script>
+<meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <style>
+            body {
+                padding-top: 0px;
+                padding-bottom: 20px;
+				padding-left:20px;
+				padding-right:50px;
+            }
+        </style>
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/main.css">
+
+        <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+		
+
+</header>
+<body>
+<!--<canvas data-processing-sources="GLN_Final_Project.pde"></canvas>-->
+<h1> Konnect </h1>
+<h2> A Gaming Learning Neuroscience Project </h2>
+<h3> By Aidan Wood </h3>
+<p> <b> Description: </b> Konnect is a 1v1 deck-based constructive card game with tile/board elements, or at least it was supposed to be.
+ It was originally designed as an analog game, devoid of any technological components. However, I realized that it would be about as easy 
+to produce as WotC's <a href="http://www.wizards.com/default.asp?x=ah/prod/roborally" title="When Robo Rally turned out to be too expensive, Richard Garfield created Magic the Gathering as a cheaper alternative"> Robo Rally </a> 
+i.e. more trouble than it was worth. Therefore, I decided to create a Java application. On the Pro side, the cost and physical labour would be a lot less. On the Con side, not as many of the intricacies of the game 
+would be able to be explored. <a href="rules.htm">Here is a description of the original rules, if it would be instigated as a analog game</a>. There are a few noticeable changes between that game described in the rules and the 
+final product you can download and play today. First, there is not a different set of pipes/wires for both electricity and water; the connectors are the same. Second, there are no cards, nor special actions. To instigate cards 
+would have meant creating an advanced GUI that would take at the very least a couple of months. Third, players receive a random tile each turn instead of having a hand of tiles drawn from a communal pile. Otherwise the game, 
+and victory conditions, are exactly the same. </P>
+
+<em> <h4> NOTE: DOWNLOADABLE VERSION NOT AVAILABLE YET PROJECT.BAT DOESNT RUN PROPERLY FIXING AS SOON AS POSSIBLE
+</h4> </em>  
+<p> Here is the code for the game: </p>
+<pre>
+<span style="color: #E2661A;">int</span> turn = 1;
+<span style="color: #E2661A;">int</span> onep = 0;
+<span style="color: #E2661A;">color</span> baseA = #2509DB;
+<span style="color: #E2661A;">color</span> baseB = #F51B1F;
+<span style="color: #E2661A;">color</span> electric = #F5F51B;
+<span style="color: #E2661A;">color</span> water = #1BEAF5;
+<span style="color: #E2661A;">color</span> pipe = #555151;
+
+<span style="color: #33997E;">void</span> <span style="color: #006699;"><b>setup</b></span>()
+{
+&nbsp;&nbsp;&nbsp;<span style="color: #006699;">size</span>(250, 350);
+&nbsp;&nbsp;&nbsp;<span style="color: #006699;">background</span>(255); 
+&nbsp;&nbsp;&nbsp;drawBoard();
+&nbsp;&nbsp;&nbsp;frame.setTitle(<span style="color: #7D4793;">&quot;Konnect&quot;</span>);
+}
+
+<span style="color: #33997E;">void</span> <span style="color: #006699;"><b>draw</b></span>()
+{
+
+&nbsp;&nbsp;<span style="color: #006699;">fill</span>(255);
+&nbsp;&nbsp;tileNext();
+&nbsp;&nbsp;<span style="color: #E2661A;">String</span> mousepx = <span style="color: #006699;">str</span>(<span style="color: #D94A7A;">mouseX</span>);
+&nbsp;&nbsp;<span style="color: #E2661A;">String</span> mousepy = <span style="color: #006699;">str</span>(<span style="color: #D94A7A;">mouseY</span>);
+&nbsp;&nbsp;<span style="color: #E2661A;">String</span> comma = <span style="color: #7D4793;">&quot;, &quot;</span>;
+&nbsp;&nbsp;<span style="color: #006699;">println</span>(mousepx+comma+mousepy, <span style="color: #006699;">millis</span>()/1000);
+&nbsp;&nbsp;spawnTiles();
+&nbsp;&nbsp;tileAp();
+<span style="color: #666666;">//&nbsp;&nbsp;if(keyPressed&nbsp;==&nbsp;true)</span>
+<span style="color: #666666;">//&nbsp;&nbsp;{</span>
+<span style="color: #666666;">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background(255);&nbsp;</span>
+<span style="color: #666666;">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drawBoard();</span>
+<span style="color: #666666;">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;turn&nbsp;=&nbsp;0;&nbsp;</span>
+<span style="color: #666666;">//&nbsp;&nbsp;}</span>
+&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(baseA);
+&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(0, 0, 25, 25);
+&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(baseB);
+&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(<span style="color: #D94A7A;">width</span>-25, 0, 25, 25);
+&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(electric);
+&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(<span style="color: #D94A7A;">width</span>-25, 225, 25, 25);
+&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(water);
+&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(0, 225, 25, 25);
+}
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+<span style="color: #33997E;">void</span> drawBoard()
+&nbsp;{
+&nbsp;&nbsp;&nbsp;<span style="color: #E2661A;">int</span> graphstartx = 0;
+&nbsp;&nbsp;&nbsp;<span style="color: #E2661A;">int</span> graphstarty = 0;
+&nbsp;&nbsp;&nbsp;<span style="color: #E2661A;">int</span> e = 0;
+&nbsp;&nbsp;&nbsp;<span style="color: #E2661A;">int</span> x = graphstartx;
+&nbsp;&nbsp;&nbsp;<span style="color: #E2661A;">int</span> y = graphstarty;
+&nbsp;&nbsp;&nbsp;<span style="color: #669900;">while</span> (e &lt; 10)
+&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">for</span> (<span style="color: #E2661A;">int</span> i = 0; i &lt;= 10; i++)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(x, y, 25, 25);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;+=&nbsp;25;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y&nbsp;+=&nbsp;25;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e++;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;=&nbsp;graphstartx;
+&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;
+
+&nbsp;}
+&nbsp;
+
+
+
+
+
+</pre>
+<pre>
+<span style="color: #E2661A;">float</span> rand = <span style="color: #006699;">random</span>(1,101);
+<span style="color: #E2661A;">Integer</span> r1 = <span style="color: #006699;">int</span>(rand);
+
+<span style="color: #33997E;">void</span> tileNext()
+{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;<span style="color: #669900;">if</span>(<span style="color: #D94A7A;">mouseX</span> &lt;= 250 &amp;&amp; <span style="color: #D94A7A;">mouseX</span> &gt;= 0 &amp;&amp; <span style="color: #D94A7A;">mouseY</span> &gt;= 0 &amp;&amp; <span style="color: #D94A7A;">mouseY</span> &lt; 250)
+&nbsp;{&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">if</span>(r1 &gt;= 51 &amp;&amp; r1 &lt;= 60)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T1&nbsp;tile11&nbsp;=&nbsp;<span style="color: #33997E;">new</span> T1((<span style="color: #D94A7A;">width</span>/2) - 12.5, 275, 25);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span> <span style="color: #669900;">if</span>(r1 &gt;= 1 &amp;&amp; r1 &lt;= 25)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T2&nbsp;tile22&nbsp;=&nbsp;<span style="color: #33997E;">new</span> T2((<span style="color: #D94A7A;">width</span>/2) - 12.5, 275, 25);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span> <span style="color: #669900;">if</span>(r1 &gt;= 61 &amp;&amp; r1 &lt;= 70)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T3&nbsp;tile33&nbsp;=&nbsp;<span style="color: #33997E;">new</span> T3((<span style="color: #D94A7A;">width</span>/2) - 12.5, 275, 25);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span> <span style="color: #669900;">if</span>(r1 &gt;= 26 &amp;&amp; r1 &lt;= 50)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T4&nbsp;tile44&nbsp;=&nbsp;<span style="color: #33997E;">new</span> T4((<span style="color: #D94A7A;">width</span>/2) - 12.5, 275, 25);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span> <span style="color: #669900;">if</span>(r1 &gt; 70 &amp;&amp; r1 &lt;= 72.5)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T5&nbsp;tile55&nbsp;=&nbsp;<span style="color: #33997E;">new</span> T5((<span style="color: #D94A7A;">width</span>/2) - 12.5, 275, 25);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span> <span style="color: #669900;">if</span>(r1 &gt; 72.5 &amp;&amp; r1 &lt;= 75)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T6&nbsp;tile66&nbsp;=&nbsp;<span style="color: #33997E;">new</span> T6((<span style="color: #D94A7A;">width</span>/2) - 12.5, 275, 25);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span> <span style="color: #669900;">if</span>(r1 &gt; 75 &amp;&amp; r1 &lt;= 77.5)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T7&nbsp;tile77&nbsp;=&nbsp;<span style="color: #33997E;">new</span> T7((<span style="color: #D94A7A;">width</span>/2) - 12.5, 275, 25);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span> <span style="color: #669900;">if</span>(r1 &gt; 77.5 &amp;&amp; r1 &lt;= 80)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T8&nbsp;tile88&nbsp;=&nbsp;<span style="color: #33997E;">new</span> T8((<span style="color: #D94A7A;">width</span>/2) - 12.5, 275, 25);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span> <span style="color: #669900;">if</span>(r1 &gt; 80 &amp;&amp; r1 &lt;= 90)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T9&nbsp;tile99&nbsp;=&nbsp;<span style="color: #33997E;">new</span> T9((<span style="color: #D94A7A;">width</span>/2) - 12.5, 275, 25);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span> <span style="color: #669900;">if</span>(r1 &gt; 90 &amp;&amp; r1 &lt;= 100)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T10&nbsp;tile1010&nbsp;=&nbsp;<span style="color: #33997E;">new</span> T10((<span style="color: #D94A7A;">width</span>/2) - 12.5, 275, 25);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;}
+}
+&nbsp;
+&nbsp;&nbsp;
+
+</pre>
+<pre>
+<span style="color: #33997E;">class</span> T1 { <span style="color: #666666;">//Pipe coming from top and going right</span>
+
+&nbsp;&nbsp;T1(<span style="color: #E2661A;">float</span> locX, <span style="color: #E2661A;">float</span> locY, <span style="color: #E2661A;">int</span> m) {
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(0);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(locX, locY, m, m);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(pipe);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(locX+10, locY, m-20, m/2);
+<span style="color: #666666;">//&nbsp;&nbsp;&nbsp;&nbsp;rect(locX+10,&nbsp;locY+7.5,&nbsp;m,&nbsp;m-20);</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(locX+10, (locY)+(m-15), m-10, m-20);
+&nbsp;&nbsp;}
+}
+
+<span style="color: #33997E;">class</span> T2 { <span style="color: #666666;">//Normal vertical pipe from top to bottom</span>
+&nbsp;&nbsp;
+&nbsp;&nbsp;T2(<span style="color: #E2661A;">float</span> locX, <span style="color: #E2661A;">float</span> locY, <span style="color: #E2661A;">int</span> m) {
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(0);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(locX, locY, m, m);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(pipe);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(locX+10, locY, m-20, m);
+&nbsp;&nbsp;}
+}
+
+<span style="color: #33997E;">class</span> T3 { <span style="color: #666666;">//Cross, top to bottom, left to right</span>
+&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;T3(<span style="color: #E2661A;">float</span> locX, <span style="color: #E2661A;">float</span> locY, <span style="color: #E2661A;">int</span> m) {
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(0);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(locX, locY, m, m);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(pipe);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(locX+10, locY, m-20, m);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(locX, locY+10, m, m-20);
+&nbsp;&nbsp;}
+}
+
+
+
+<span style="color: #33997E;">class</span> T4 { <span style="color: #666666;">//Normal horizontal pipe across from left to right</span>
+&nbsp;&nbsp;
+&nbsp;&nbsp;T4(<span style="color: #E2661A;">float</span> locX, <span style="color: #E2661A;">float</span> locY, <span style="color: #E2661A;">int</span> m) {
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(0);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(locX, locY, m, m);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(pipe);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(locX, locY+10, m, m-20);
+&nbsp;&nbsp;}
+}
+
+<span style="color: #33997E;">class</span> T5 { <span style="color: #666666;">//Short pipe ending in the middle, coming from the bottom</span>
+&nbsp;&nbsp;
+&nbsp;&nbsp;T5(<span style="color: #E2661A;">float</span> locX, <span style="color: #E2661A;">float</span> locY, <span style="color: #E2661A;">int</span> m) {
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(0);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(locX, locY, m, m);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(pipe);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(locX+10, locY+(m/2), m-20, m/2);
+&nbsp;&nbsp;}
+}
+
+<span style="color: #33997E;">class</span> T6 { <span style="color: #666666;">//Short pipe ending in the middle, coming from the left</span>
+&nbsp;&nbsp;
+&nbsp;&nbsp;T6(<span style="color: #E2661A;">float</span> locX, <span style="color: #E2661A;">float</span> locY, <span style="color: #E2661A;">int</span> m) {
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(0);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(locX, locY, m, m);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(pipe);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(locX, locY+m-15, m/2, m-20);
+&nbsp;&nbsp;}
+}
+
+<span style="color: #33997E;">class</span> T7 { <span style="color: #666666;">//Short pipe ending in the middle, coming from the top</span>
+&nbsp;&nbsp;
+&nbsp;&nbsp;T7(<span style="color: #E2661A;">float</span> locX, <span style="color: #E2661A;">float</span> locY, <span style="color: #E2661A;">int</span> m) {
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(0);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(locX, locY, m, m);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(pipe);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(locX+m-15, locY, m-20, m/2);
+&nbsp;&nbsp;}
+}
+
+<span style="color: #33997E;">class</span> T8 { <span style="color: #666666;">//Short pipe ending in the middle, coming from the right</span>
+&nbsp;&nbsp;
+&nbsp;&nbsp;T8(<span style="color: #E2661A;">float</span> locX, <span style="color: #E2661A;">float</span> locY, <span style="color: #E2661A;">int</span> m) {
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(0);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(locX, locY, m, m);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(pipe);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(locX+m/2, locY+m-15, m/2, m-20);
+&nbsp;&nbsp;}
+}
+
+<span style="color: #33997E;">class</span> T9 { <span style="color: #666666;">//Top to left</span>
+&nbsp;&nbsp;
+&nbsp;&nbsp;T9(<span style="color: #E2661A;">float</span> locX, <span style="color: #E2661A;">float</span> locY, <span style="color: #E2661A;">int</span> m) {
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(0);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(locX, locY, m, m);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(pipe);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(locX+m-15, locY, m-20, m/2);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(locX, locY+m-15, m-10, m-20);
+&nbsp;&nbsp;}
+}
+
+<span style="color: #33997E;">class</span> T10 { <span style="color: #666666;">//Left to bottom</span>
+&nbsp;&nbsp;
+&nbsp;&nbsp;T10(<span style="color: #E2661A;">float</span> locX, <span style="color: #E2661A;">float</span> locY, <span style="color: #E2661A;">int</span> m) {
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(0);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(locX, locY, m, m);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(pipe);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(locX+10, locY+10, m-20, 15);
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">rect</span>(locX, locY+m-15, 15, m-20);
+&nbsp;&nbsp;}
+}
+
+<span style="color: #666666;">//class&nbsp;Tile&nbsp;{&nbsp;//this&nbsp;is&nbsp;a&nbsp;basic&nbsp;black&nbsp;tile</span>
+<span style="color: #666666;">//&nbsp;&nbsp;</span>
+<span style="color: #666666;">//&nbsp;&nbsp;Tile(float&nbsp;locX,&nbsp;float&nbsp;locY,&nbsp;int&nbsp;tileW,&nbsp;int&nbsp;tileH)&nbsp;{</span>
+<span style="color: #666666;">//&nbsp;&nbsp;&nbsp;&nbsp;fill(0);</span>
+<span style="color: #666666;">//&nbsp;&nbsp;&nbsp;&nbsp;rect(locX,&nbsp;locY,&nbsp;tileW,&nbsp;tileH);</span>
+<span style="color: #666666;">//&nbsp;&nbsp;}</span>
+<span style="color: #666666;">//&nbsp;&nbsp;</span>
+<span style="color: #666666;">//}</span>
+
+</pre>
+<pre>
+<span style="color: #33997E;">void</span> drawM()
+{
+&nbsp;&nbsp;<span style="color: #E2661A;">float</span> mX = <span style="color: #D94A7A;">mouseX</span>;
+&nbsp;&nbsp;<span style="color: #E2661A;">float</span> mY = <span style="color: #D94A7A;">mouseY</span>;
+&nbsp;&nbsp;<span style="color: #E2661A;">float</span> fX = 0;
+&nbsp;&nbsp;<span style="color: #E2661A;">float</span> fY = 0;
+&nbsp;&nbsp;fX&nbsp;=&nbsp;mX&nbsp;%&nbsp;25;
+&nbsp;&nbsp;fY&nbsp;=&nbsp;mY&nbsp;%&nbsp;25;
+&nbsp;&nbsp;<span style="color: #669900;">if</span>(mX &gt;= 12.5 || fX == mX)
+&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;mX&nbsp;=&nbsp;mX&nbsp;-&nbsp;fX;
+&nbsp;&nbsp;}
+&nbsp;&nbsp;<span style="color: #669900;">else</span>
+&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;mX&nbsp;=&nbsp;mX&nbsp;+&nbsp;(25-fX);&nbsp;
+&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;<span style="color: #669900;">if</span>(mY &gt;= 12.5 || fY == mY)
+&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mY&nbsp;=&nbsp;mY&nbsp;-&nbsp;fY;&nbsp;
+&nbsp;&nbsp;}
+&nbsp;&nbsp;<span style="color: #669900;">else</span>
+&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mY&nbsp;=&nbsp;mY&nbsp;+&nbsp;(25-fY);&nbsp;
+&nbsp;&nbsp;}
+<span style="color: #666666;">//&nbsp;&nbsp;Tile&nbsp;tile1&nbsp;=&nbsp;new&nbsp;Tile(mX,&nbsp;mY,&nbsp;25,&nbsp;25);</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">if</span>(r1 &gt;= 51 &amp;&amp; r1 &lt;= 60)
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T1&nbsp;tile1&nbsp;=&nbsp;<span style="color: #33997E;">new</span> T1(mX, mY, 25);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span> <span style="color: #669900;">if</span>(r1 &gt;= 1 &amp;&amp; r1 &lt;= 25)
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T2&nbsp;tile2&nbsp;=&nbsp;<span style="color: #33997E;">new</span> T2(mX, mY, 25); 
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span> <span style="color: #669900;">if</span>(r1 &gt;= 61 &amp;&amp; r1 &lt;= 70)
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T3&nbsp;tile3&nbsp;=&nbsp;<span style="color: #33997E;">new</span> T3(mX, mY, 25); 
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span> <span style="color: #669900;">if</span>(r1 &gt;= 26 &amp;&amp; r1 &lt;= 50)
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T4&nbsp;tile4&nbsp;=&nbsp;<span style="color: #33997E;">new</span> T4(mX, mY, 25); 
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span> <span style="color: #669900;">if</span>(r1 &gt; 70 &amp;&amp; r1 &lt;= 72.5)
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T5&nbsp;tile5&nbsp;=&nbsp;<span style="color: #33997E;">new</span> T5(mX, mY, 25); 
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span> <span style="color: #669900;">if</span>(r1 &gt; 72.5 &amp;&amp; r1 &lt;= 75)
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T6&nbsp;tile6&nbsp;=&nbsp;<span style="color: #33997E;">new</span> T6(mX, mY, 25); 
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span> <span style="color: #669900;">if</span>(r1 &gt; 75 &amp;&amp; r1 &lt;= 77.5)
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T7&nbsp;tile7&nbsp;=&nbsp;<span style="color: #33997E;">new</span> T7(mX, mY, 25); 
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span> <span style="color: #669900;">if</span>(r1 &gt; 77.5 &amp;&amp; r1 &lt;= 80)
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T8&nbsp;tile8&nbsp;=&nbsp;<span style="color: #33997E;">new</span> T8(mX, mY, 25); 
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span> <span style="color: #669900;">if</span>(r1 &gt; 80 &amp;&amp; r1 &lt;= 90)
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T9&nbsp;tile9&nbsp;=&nbsp;<span style="color: #33997E;">new</span> T9(mX, mY, 25); 
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span> <span style="color: #669900;">if</span>(r1 &gt; 90 &amp;&amp; r1 &lt;= 100)
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T10&nbsp;tile10&nbsp;=&nbsp;<span style="color: #33997E;">new</span> T10(mX, mY, 25); 
+&nbsp;&nbsp;&nbsp;&nbsp;}
+}
+<span style="color: #33997E;">void</span> <span style="color: #006699;">mouseReleased</span>()
+{
+&nbsp;&nbsp;<span style="color: #669900;">if</span>(<span style="color: #D94A7A;">mouseX</span> &lt;= 250 &amp;&amp; <span style="color: #D94A7A;">mouseX</span> &gt;= 0 &amp;&amp; <span style="color: #D94A7A;">mouseY</span> &gt;= 0 &amp;&amp; <span style="color: #D94A7A;">mouseY</span> &lt; 250)
+&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;turn++;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onep&nbsp;=&nbsp;0;
+
+&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;<span style="color: #669900;">if</span>(<span style="color: #D94A7A;">mouseX</span> &lt; 25 &amp;&amp; <span style="color: #D94A7A;">mouseY</span> &lt; 25)
+&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;turn++;
+&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span> <span style="color: #669900;">if</span>(<span style="color: #D94A7A;">mouseX</span> &lt; 25 &amp;&amp; <span style="color: #D94A7A;">mouseY</span> &gt; 225)
+&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;turn++;
+&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span> <span style="color: #669900;">if</span>(<span style="color: #D94A7A;">mouseX</span> &gt; 225 &amp;&amp; <span style="color: #D94A7A;">mouseY</span> &gt; 225)
+&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;turn++;
+&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span> <span style="color: #669900;">if</span>(<span style="color: #D94A7A;">mouseX</span> &gt; 225 &amp;&amp; <span style="color: #D94A7A;">mouseY</span> &lt; 25)
+&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;turn++;
+&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;<span style="color: #669900;">else</span>
+&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E2661A;">float</span> rand = <span style="color: #006699;">random</span>(1,101);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r1&nbsp;=&nbsp;<span style="color: #006699;">int</span>(rand);
+&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;<span style="color: #669900;">if</span>(<span style="color: #D94A7A;">mouseX</span> &gt;= (<span style="color: #D94A7A;">width</span>/2) - 12.5 &amp;&amp; <span style="color: #D94A7A;">mouseX</span> &lt;= (<span style="color: #D94A7A;">width</span>/2) + 12.5 &amp;&amp; <span style="color: #D94A7A;">mouseY</span> &gt;= 300 &amp;&amp; <span style="color: #D94A7A;">mouseY</span> &lt;= 325)
+&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;turn++;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E2661A;">float</span> rand = <span style="color: #006699;">random</span>(1,101);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r1&nbsp;=&nbsp;<span style="color: #006699;">int</span>(rand);
+&nbsp;&nbsp;}&nbsp;
+}
+
+<span style="color: #33997E;">void</span> spTile()
+{
+&nbsp;<span style="color: #006699;">fill</span>(255);
+&nbsp;<span style="color: #E2661A;">float</span> tilex = (<span style="color: #D94A7A;">width</span>/2) - 12.5;
+&nbsp;<span style="color: #E2661A;">float</span> tiley = 300;
+&nbsp;<span style="color: #E2661A;">float</span> tiled = 25;
+&nbsp;<span style="color: #669900;">if</span>(turn % 2 != 0)
+&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(baseA);
+&nbsp;}
+&nbsp;<span style="color: #669900;">else</span>
+&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">fill</span>(baseB); 
+&nbsp;}
+<span style="color: #666666;">//&nbsp;if(mouseX&nbsp;&gt;&nbsp;tilex-tiled&nbsp;&amp;&amp;&nbsp;mouseX&nbsp;&lt;&nbsp;tilex+tiled&nbsp;&amp;&amp;&nbsp;mouseY&nbsp;&gt;&nbsp;tiley-tiled&nbsp;&amp;&amp;&nbsp;mouseY&nbsp;&lt;&nbsp;tiley+tiled)</span>
+<span style="color: #666666;">//&nbsp;{</span>
+<span style="color: #666666;">//&nbsp;&nbsp;&nbsp;fill(0);</span>
+<span style="color: #666666;">//&nbsp;}</span>
+&nbsp;<span style="color: #006699;">rect</span>(tilex, tiley, 25, 25);
+}
+
+<span style="color: #E2661A;">int</span> t = 0;
+<span style="color: #33997E;">void</span> tileAp()
+{
+
+&nbsp;&nbsp;<span style="color: #006699;">fill</span>(0);
+&nbsp;&nbsp;t&nbsp;=&nbsp;<span style="color: #006699;">millis</span>();
+&nbsp;&nbsp;<span style="color: #669900;">if</span>(<span style="color: #D94A7A;">mousePressed</span> &amp;&amp; <span style="color: #D94A7A;">mouseX</span> &lt;= 250 &amp;&amp; <span style="color: #D94A7A;">mouseX</span> &gt;= 0 &amp;&amp; <span style="color: #D94A7A;">mouseY</span> &gt;= 0 &amp;&amp; <span style="color: #D94A7A;">mouseY</span> &lt; 250 &amp;&amp; onep == 0)
+&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drawM();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onep++;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+
+}
+
+<span style="color: #33997E;">void</span> spawnTiles()
+{
+&nbsp;<span style="color: #E2661A;">boolean</span> b = <span style="color: #33997E;">true</span>;
+&nbsp;
+&nbsp;<span style="color: #669900;">if</span>(b == <span style="color: #33997E;">true</span>)
+&nbsp;{
+&nbsp;&nbsp;&nbsp;spTile();
+&nbsp;}
+&nbsp;<span style="color: #669900;">else</span>
+&nbsp;{
+&nbsp;&nbsp;&nbsp;
+&nbsp;}
+&nbsp;&nbsp;
+}
+
+
+
+</pre>
+
+
+</body>
+
+
+
+</html>
